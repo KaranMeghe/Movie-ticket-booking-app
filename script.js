@@ -6,12 +6,13 @@ const total = document.getElementById('total');
 const movieSelect = document.getElementById('movie');
 let ticketPrice = +movieSelect.value;
 
+populateUI();
+
 
 // setMovieData() save selected movie index and price
 function setMovieData(movieIndex, moviePrice){
     localStorage.setItem('selectedMovieIndex', movieIndex);
-    localStorage.setItem('selectedMovieIndex', moviePrice);
-
+    localStorage.setItem('selectedMoviePrice', moviePrice);
 }
 
 // UpdateSelectedCount() update total and count
@@ -21,21 +22,16 @@ function updateSelectedCount(){
     
     // Copy selected seats into array
     // Map through array
-    // return a new array indexes
-
-    
-     const seatIndex = [...selectedSeats].map((seat) => {
+    // return a new array indexes 
+     const seatsIndex = [...selectedSeats].map((seat) => {
         return [...seats].indexOf(seat);
      });
 
-     localStorage.setItem('selectedSeats',JSON.stringify(seatIndex));
-    console.log(seatIndex);
-
+     localStorage.setItem('selectedSeats',JSON.stringify(seatsIndex));
+    console.log(seatsIndex);
 
     count.innerText = selectedSeatsCount;
     total.innerText = selectedSeatsCount * ticketPrice;
-    
-   
 }
 
 // Movie select Event Listner
@@ -45,6 +41,26 @@ movieSelect.addEventListener('change', (e) => {
     updateSelectedCount();
 });
 
+// Get data from local storage and populate UI
+function populateUI(){
+    const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+    
+    if(selectedSeats !== null && selectedSeats.length >0){
+        seats.forEach((seat,index) =>{
+            if(selectedSeats.indexOf(index) > -1){
+                seat.classList.add('selected');
+            }
+        })
+    }
+
+    const selectedMovieIndex = localStorage.getItem('selectedMovieIndex');
+    
+    if(selectedMovieIndex !== null){
+        movieSelect.selectedIndex = selectedMovieIndex;
+    }
+
+}
+
 // Seat click Event Listners
 container.addEventListener('click',(e) => {
     if(e.target.classList.contains('seat') && !e.target.classList.contains('occupied')){
@@ -52,3 +68,6 @@ container.addEventListener('click',(e) => {
           updateSelectedCount();
         }
 });
+
+// Initial count and total set
+updateSelectedCount();
