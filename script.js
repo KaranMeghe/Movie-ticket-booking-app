@@ -8,7 +8,6 @@ let ticketPrice = +movieSelect.value;
 
 populateUI();
 
-
 // setMovieData() save selected movie index and price
 function setMovieData(movieIndex, moviePrice){
     localStorage.setItem('selectedMovieIndex', movieIndex);
@@ -34,12 +33,6 @@ function updateSelectedCount(){
     total.innerText = selectedSeatsCount * ticketPrice;
 }
 
-// Movie select Event Listner
-movieSelect.addEventListener('change', (e) => {
-    ticketPrice = +e.target.value;
-    setMovieData(e.target.selectedIndex, e.target.value)
-    updateSelectedCount();
-});
 
 // Get data from local storage and populate UI
 function populateUI(){
@@ -54,11 +47,21 @@ function populateUI(){
     }
 
     const selectedMovieIndex = localStorage.getItem('selectedMovieIndex');
-    
+    const selectMoviePrice = localStorage.getItem('selectedMoviePrice');
+    ticketPrice = selectMoviePrice;
+
     if(selectedMovieIndex !== null){
         movieSelect.selectedIndex = selectedMovieIndex;
     }
 }
+
+// Movie select Event Listner
+movieSelect.addEventListener('change', (e) => {
+    ticketPrice = +e.target.value;
+    setMovieData(e.target.selectedIndex, e.target.value)
+    updateSelectedCount();
+});
+
 
 // Seat click Event Listners
 container.addEventListener('click',(e) => {
