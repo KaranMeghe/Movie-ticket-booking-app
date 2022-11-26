@@ -58,7 +58,6 @@ function populateUI(){
     if(selectedMovieIndex !== null){
         movieSelect.selectedIndex = selectedMovieIndex;
     }
-
 }
 
 // Seat click Event Listners
